@@ -1,4 +1,4 @@
-
+In case you experienced SEGFAULT (putenv.c) on Debian 11, this branch fixes it.
 
 Have you ever wanted to split your database load across multiple servers or clusters without impacting the configuration or code of your client applications? Or perhaps you have wished for a way to intercept and modify application queries, so that you can make them use optimized tables (sorted, pre-joined, pre-aggregated, etc.), add security filters, or hide changes you have made in the schema?  
 

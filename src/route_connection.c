@@ -67,7 +67,7 @@ bool route_client_connection(PgSocket *client, PktHdr *pkt) {
 	}
 
 	dbname = pycall(client, client->login_user->name, query_str, cf_routing_rules_py_module_file,
-			"routing_rules");
+			"routing_rules", routing_rules_py_path);
 	if (dbname == NULL) {
 		slog_debug(client, "routing_rules returned 'None' - existing connection preserved");
 		return false;

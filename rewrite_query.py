@@ -28,7 +28,7 @@ def rewrite_query(username, query):
     elif re.match(q2, query):
         new_query = "SELECT prodname, SUM(total) FROM product_sales GROUP BY prodname ORDER BY prodname;"
     else:
-        new_query = query
+    	return None 
     return new_query
         
 

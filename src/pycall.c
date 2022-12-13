@@ -19,11 +19,11 @@ This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS O
 #include <usual/pgutil.h>
 
 char *pycall(PgSocket *client, char *username, char *query_str, char *py_file,
-		char* py_function) {
+		char* py_function, char* py_path) {
 	PyObject *pName = NULL, *pModule = NULL, *pFunc = NULL;
 	PyObject *pArgs = NULL, *pValue = NULL, *pArgsCnt = NULL, *pCode = NULL;
 	PyObject *ptype, *perror, *ptraceback, *bytes_obj, *string_obj;
-	char *py_pathtmp, *py_filetmp, *py_path, *py_module, *ext;
+	char *py_pathtmp, *py_filetmp, *py_module, *ext;
 	char *res = NULL;
 	int agCount = 0;
 	const char *dbname = NULL;
@@ -34,13 +34,6 @@ char *pycall(PgSocket *client, char *username, char *query_str, char *py_file,
 		slog_error(client, "out of memory");
 		return NULL;
 	}
-	py_path = malloc(strlen(py_file) + 20) ;
-	if (py_path == NULL) {
-		slog_error(client, "out of memory");
-		free(py_pathtmp);
-		return NULL;
-	}
-        sprintf(py_path,"PYTHONPATH=%s",dirname(py_pathtmp)) ;
 	putenv(py_path) ;
 
 	/* setup python module name, function name */
@@ -48,7 +41,6 @@ char *pycall(PgSocket *client, char *username, char *query_str, char *py_file,
 	if (py_filetmp == NULL) {
 		slog_error(client, "out of memory");
 		free(py_pathtmp);
-		free(py_path);
 		return NULL;
 	}
 	py_module = (char *) basename(py_filetmp);
@@ -168,7 +160,6 @@ char *pycall(PgSocket *client, char *username, char *query_str, char *py_file,
     }
 	free(py_pathtmp);
 	free(py_filetmp);
-	free(py_path);
 	Py_XDECREF(pName);
 	Py_XDECREF(pModule);
 	Py_XDECREF(pFunc);

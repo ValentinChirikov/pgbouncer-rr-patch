@@ -85,7 +85,7 @@ bool rewrite_query(PgSocket *client, PktHdr *pkt) {
 
 	/* call python function to rewrite the query */
 	tmp_new_query_str = pycall(client, client->login_user->name, query_str, cf_rewrite_query_py_module_file,
-			"rewrite_query");
+			"rewrite_query", rewrite_query_py_path);
 	if (tmp_new_query_str == NULL) {
 		slog_debug(client, "query unchanged");
 		return true;
