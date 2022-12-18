@@ -1,4 +1,14 @@
 In case you experienced SEGFAULT (putenv.c) on Debian 11, this branch fixes it.
+Below stack backtrace for such kind of errors.
+
+```
+#0  __strncmp_avx2 () at ../sysdeps/x86_64/multiarch/strcmp-avx2.S:101
+#1  0x00007fc3b9cf5e09 in __add_to_environ (name=0x7ffc5f874a60 "PYTHONPATH", value=value@entry=0x0, combined=combined@entry=0x55786ae28080 "PYTHONPATH=/etc/pgbouncer", replace=replace@entry=1) at setenv.c:143
+#2  0x00007fc3b9cf5d01 in putenv (string=string@entry=0x55786ae28080 "PYTHONPATH=/etc/pgbouncer") at putenv.c:77
+#3  0x000055786a46ed7a in pycall (client=client@entry=0x55786ad62750, username=0x55786ad3cbc8 "SOME USER", query_str=query_str@entry=0x7fc3b927c042 "SOME QUERY, SEEMS DOESN'T REALLY MATTER WHAT KIND OF :) ",
+    py_file=0x55786ad37e90 "/etc/pgbouncer/rewrite_query.py", py_function=py_function@entry=0x55786a486c67 "rewrite_query") at src/pycall.c:44
+#4  0x000055786a46fa98 in rewrite_query (client=client@entry=0x55786ad62750, pkt=pkt@entry=0x7ffc5f874c10) at src/rewrite_query.c:87
+```
 
 Have you ever wanted to split your database load across multiple servers or clusters without impacting the configuration or code of your client applications? Or perhaps you have wished for a way to intercept and modify application queries, so that you can make them use optimized tables (sorted, pre-joined, pre-aggregated, etc.), add security filters, or hide changes you have made in the schema?  
 
